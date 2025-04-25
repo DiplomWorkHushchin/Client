@@ -2,20 +2,13 @@
 
 import * as React from "react"
 import {
-    ArrowUpCircleIcon,
-    BarChartIcon,
-    CameraIcon,
+    BarChartIcon, BookOpenCheck,
     ClipboardListIcon,
     DatabaseIcon,
-    FileCodeIcon,
     FileIcon,
-    FileTextIcon,
-    HelpCircleIcon,
     LayoutDashboardIcon,
-    ListIcon,
-    SearchIcon,
+    MessageCircle,
     SettingsIcon,
-    UsersIcon,
 } from "lucide-react"
 
 import { NavDocuments } from "@/components/sidebar/nav-documents"
@@ -31,13 +24,9 @@ import {
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import Link from "next/link";
 
 const data = {
-    user: {
-        name: "User",
-        email: "m@example.com",
-        avatar: "/avatars/shadcn.jpg",
-    },
     navMain: [
         {
             title: "Dashboard",
@@ -47,7 +36,7 @@ const data = {
         {
             title: "Courses",
             url: "/courses",
-            icon: ListIcon,
+            icon: BookOpenCheck,
         },
         {
             title: "Schedule",
@@ -55,9 +44,9 @@ const data = {
             icon: BarChartIcon,
         },
         {
-            title: "Messages",
+            title: "Chats",
             url: "/chats",
-            icon: UsersIcon,
+            icon: MessageCircle,
         },
     ],
     navSecondary: [
@@ -96,7 +85,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                             asChild
                             className="data-[slot=sidebar-menu-button]:!p-1.5"
                         >
-                            <a href="/dashboard">
+                            <Link href="/dashboard">
                                 <svg
                                     id="Component_41_1"
                                     data-name="Component 41 – 1"
@@ -140,7 +129,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                     </g>
                                 </svg>
                                 <span className="text-base font-semibold">IPZE Edu. Sys.</span>
-                            </a>
+                            </Link>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>
@@ -151,7 +140,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 <NavSecondary items={data.navSecondary} className="mt-auto" />
             </SidebarContent>
             <SidebarFooter>
-                <NavUser user={data.user} />
+                <NavUser />
             </SidebarFooter>
         </Sidebar>
     )
