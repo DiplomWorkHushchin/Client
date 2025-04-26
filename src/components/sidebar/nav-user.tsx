@@ -18,6 +18,7 @@ import {
 import {useSelector} from "react-redux";
 import {RootState} from "@/store/store";
 import Link from "next/link";
+import React from "react";
 
 export function NavUser() {
     const user = useSelector((state: RootState) => state.user.user);
@@ -31,8 +32,8 @@ export function NavUser() {
                             className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground cursor-pointer"
                         >
                             <Avatar className="h-8 w-8 rounded-lg">
-                                {user?.userPhoto ?  <AvatarImage
-                                    src={process.env.NEXT_PUBLIC_BASE_API_URL + user?.userPhoto}
+                                {user?.photoUrl ?  <AvatarImage
+                                    src={process.env.NEXT_PUBLIC_BASE_API_URL + user?.photoUrl}
                                     alt={user?.userName}
                                     className={"overflow-hidden scale-110 flex justify-center items-center"}
                                 /> : null}
@@ -41,7 +42,9 @@ export function NavUser() {
                             <div className="grid flex-1 text-left text-sm leading-tight">
                                 <span className="truncate font-medium">{user?.firstName + " " + user?.lastName}</span>
                                 <span className="truncate text-xs text-muted-foreground">
-                                {user?.userRoles}
+                                {user?.userRoles && Array.isArray(user.userRoles) && user.userRoles.map((role, index) => (
+                                    <p key={index}>{role}</p>
+                                ))}
                             </span>
                             </div>
                         </SidebarMenuButton>

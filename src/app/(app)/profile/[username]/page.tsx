@@ -41,13 +41,13 @@ export default function Profile({params}: { params: Promise<{ username: string }
             <div className={"p-4 smd:p-8 mt-0 flex flex-col"}>
                 <div className={"flex items-center justify-center gap-4 smd:gap-6 md:gap-8"}>
                     <Avatar className="h-26 w-26 smd:h-36 smd:w-36  md:h-56 md:w-56 rounded-full">
-                        {user?.userPhoto ?
+                        {user?.photoUrl ?
                             <AvatarImage
-                                src={process.env.NEXT_PUBLIC_BASE_API_URL + user?.userPhoto}
+                                src={process.env.NEXT_PUBLIC_BASE_API_URL + user?.photoUrl}
                                 alt={user?.userName}
                             /> : null
                         }
-                        <AvatarFallback className="rounded-lg"><User/></AvatarFallback>
+                        <AvatarFallback className="rounded-lg"><User className={"h-3/5 w-3/5"}/></AvatarFallback>
                     </Avatar>
                     <div className={"p-2 flex flex-col gap-4 w-full h-full"}>
                         <div className={"flex justify-between"}>
@@ -67,7 +67,9 @@ export default function Profile({params}: { params: Promise<{ username: string }
                                 </TooltipProvider>
                                  : null}
                         </div>
-                        <Badge className={""}>{user?.userRoles}</Badge>
+                        {user?.userRoles.map((role, index) => (
+                            <Badge key={index}>{role}</Badge>
+                        ))}
                     </div>
                 </div>
                 <div className={"w-full"}>

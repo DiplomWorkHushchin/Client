@@ -72,9 +72,9 @@ export default function EditProfile() {
                 <div className={"flex items-center justify-center gap-4 smd:gap-6 md:gap-8"}>
                     <div className={"relative"}>
                         <Avatar className="h-26 w-26 smd:h-36 smd:w-36  md:h-56 md:w-56 rounded-full">
-                            {user?.userPhoto ?
+                            {user?.photoUrl ?
                                 <AvatarImage
-                                    src={process.env.NEXT_PUBLIC_BASE_API_URL + user?.userPhoto}
+                                    src={process.env.NEXT_PUBLIC_BASE_API_URL + user?.photoUrl}
                                     alt={user?.userName}
                                     className={"overflow-hidden"}
                                 /> : null
@@ -110,7 +110,10 @@ export default function EditProfile() {
                     </div>
                     <div className={"p-2 flex flex-col gap-4 w-full h-full"}>
                         <h1 className={"text-2xl smd:text-3xl md:text-5xl font-semibold"}>{`${user?.firstName} ${user?.lastName} ${user?.fatherName}`}</h1>
-                        <Badge>{user?.userRoles}</Badge>
+                        {user?.userRoles.map((role, index) => (
+                            <Badge key={index}>{role}</Badge>
+                        ))}
+
                     </div>
                 </div>
             </div>

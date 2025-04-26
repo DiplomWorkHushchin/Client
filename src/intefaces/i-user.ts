@@ -1,6 +1,6 @@
 export default interface IUser {
     userName: string;
-    userRoles: string;
+    userRoles: string[];
     email: string;
     phoneNumber: string;
     firstName: string;
@@ -10,5 +10,5 @@ export default interface IUser {
     dateOfBirth: string;
     country: string;
     city: string;
-    userPhoto: string;
+    photoUrl: string;
 }
