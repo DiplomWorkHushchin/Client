@@ -1,8 +1,20 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const LoadingScreen = () => {
+    const [shouldRender, setShouldRender] = useState(false);
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setShouldRender(true);
+        }, 100);
+
+        return () => clearTimeout(timeout);
+    }, []);
+
+    if (!shouldRender) return null;
+
     return (
         <div className="fixed inset-0 bg-background flex items-center justify-center z-[9999]">
             <div className="w-40">

@@ -13,9 +13,9 @@ export default function Home() {
 
     useEffect(() => {
         if (user || token) {
-            router.push("/dashboard");
+            router.replace("/dashboard");
         } else {
-            router.push("/login");
+            router.replace("/login");
             setLoading(false);
         }
     }, [user, token, router]);

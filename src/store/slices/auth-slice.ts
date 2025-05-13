@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import IUser from "@/intefaces/i-user";
-import IAuthState from "@/intefaces/store/i-auth-state";
+import IUser from "@/types/i-user";
+import IAuthState from "@/types/store/i-auth-state";
 
 const initialState: IAuthState = {
     user: null,
@@ -25,9 +25,12 @@ const userSlice = createSlice({
         },
         updateUserData(state, action: PayloadAction<IUser>) {
             state.user = action.payload;
+        },
+        setToken(state, action: PayloadAction<string>) {
+            state.token = action.payload;
         }
     },
 });
 
-export const { loginUser, logoutUser, updateUser, updateUserData } = userSlice.actions;
+export const { loginUser, logoutUser, updateUser, updateUserData, setToken } = userSlice.actions;
 export default userSlice.reducer;

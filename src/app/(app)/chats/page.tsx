@@ -1,9 +1,19 @@
-import React from 'react';
+"use client";
+
+import LoadingScreen from '@/components/loading/loading-sreen';
+import React, { useEffect, useState } from 'react';
 
 export default function Chats() {
-    return (
-        <div>
+    const [isLoading, setIsLoading] = useState(true);
 
-        </div>
-    );
+    useEffect(() => {
+        setIsLoading(false)
+    }, []);
+
+
+    return (
+        <>
+            {isLoading && <LoadingScreen />}
+        </>
+    )
 };

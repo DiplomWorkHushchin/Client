@@ -77,13 +77,12 @@ const data = {
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     return (
-        <Sidebar collapsible="offcanvas" {...props} className={"border-none"}>
+        <Sidebar collapsible="icon" {...props} className={"border-none"} >
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
                         <SidebarMenuButton
                             asChild
-                            className="data-[slot=sidebar-menu-button]:!p-1.5"
                         >
                             <Link href="/dashboard">
                                 <svg
@@ -91,7 +90,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                                     data-name="Component 41 – 1"
                                     xmlns="http://www.w3.org/2000/svg"
                                     viewBox="0 0 112.769 108.171"
-                                    className="h-16 w-16 text-black dark:text-white"
+                                    className="h-20 w-20 text-black dark:text-white"
                                     fill="currentColor"
                                 >
                                     <g id="Group_9">

@@ -10,5 +10,6 @@ export default interface IUser {
     dateOfBirth: string;
     country: string;
     city: string;
+    group: string;
     photoUrl: string;
 }
