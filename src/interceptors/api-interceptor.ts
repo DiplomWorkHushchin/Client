@@ -119,11 +119,11 @@ api.interceptors.response.use(
                 toast.error(error.response?.data?.message || "Session expired. Please login again.");
                
         if (status === 403) 
-            toast.error("You don't have permission to perform this action.");
+            toast.error(error.response?.data?.message || "You don't have permission to perform this action.");
     
 
         if (status === 404) 
-            toast.error("Requested resource not found.");
+            toast.error(error.response?.data?.message || "Requested resource not found.");
         
 
         return Promise.reject(error);

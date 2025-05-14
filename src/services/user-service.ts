@@ -1,3 +1,4 @@
+import { RegisterDTO } from "@/DTOs/register-dto";
 import UpdateUserProfileDTO from "@/DTOs/update-user-profile-dto";
 import api from "@/interceptors/api-interceptor";
 import { updateUser, updateUserData } from "@/store/slices/auth-slice";
@@ -58,6 +59,39 @@ export const findUserLiveAsync = async (query: string) => {
         const response = await api.post(`/users/search`, { query: query });
 
         if (response.status === 200) {
+            return response.data;
+        } else if (response.status === 204) {
+            return null;
+        }
+
+    } catch (error: any) {
+        if (!axios.isAxiosError(error)) 
+            toast.error("Unexpected error occurred.");
+    }
+}
+
+export const getUserByPages = async (currentPage: number, count: number) => {
+    try {
+        const response = await api.get(`/users/paginations/${currentPage}/${count}`);
+
+        if (response.status === 200) {
+            return response.data;
+        } else if (response.status === 204) {
+            return null;
+        }
+
+    } catch (error: any) {
+        if (!axios.isAxiosError(error)) 
+            toast.error("Unexpected error occurred.");
+    }
+}
+
+export const registerUserAsync = async (registerDTO: RegisterDTO) => {
+    try {
+        const response = await api.post(`/auth/register`, registerDTO);
+
+        if (response.status === 200) {
+            toast.success("User registered successfully!");
             return response.data;
         } else if (response.status === 204) {
             return null;

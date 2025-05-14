@@ -51,19 +51,19 @@ export function CourseUsersTab({ course }: CourseUsersTabProps) {
 
   const hasFetched = useRef(false);
 
+  const fetchIsntructrs = async () => {
+    const instructorsData: IUser[] | null = await getAllCourseInstructorsAsync(course.code);
+    if (instructorsData) setInstructors(instructorsData);
+  };
+
+  const fetchStudents = async () => {
+    const studentData: IUser[] | null = await getAllCourseStudentsAsync(course.code);
+    if (studentData) setStudents(studentData);
+  };
+
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
-
-    const fetchIsntructrs = async () => {
-      const instructorsData: IUser[] | null = await getAllCourseInstructorsAsync(course.code);
-      if (instructorsData) setInstructors(instructorsData);
-    };
-
-    const fetchStudents = async () => {
-      const studentData: IUser[] | null = await getAllCourseStudentsAsync(course.code);
-      if (studentData) setStudents(studentData);
-    };
 
     fetchIsntructrs();
     fetchStudents();
@@ -89,6 +89,9 @@ export function CourseUsersTab({ course }: CourseUsersTabProps) {
 
   const handleAddUser = async (email: string) => {
     await addNewUserToCourseAsync(course.code, email)
+
+    fetchIsntructrs();
+    fetchStudents();
   }
 
   const filteredUsers = users.filter((user) => {

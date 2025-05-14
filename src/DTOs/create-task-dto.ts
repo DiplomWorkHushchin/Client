@@ -3,7 +3,7 @@ export default interface CreateTaskDTO {
     description: string
     type: "lecture" | "task"
     dueDate: Date
-    dueTime: string
+    dueTime?: string
     maxPoints?: number
     materials?: {
         name: string

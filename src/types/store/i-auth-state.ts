@@ -1,4 +1,5 @@
-import IUser from "@/intefaces/i-user";
+import IUser from "../i-user";
+
 
 export default interface IAuthState {
     user: IUser | null;

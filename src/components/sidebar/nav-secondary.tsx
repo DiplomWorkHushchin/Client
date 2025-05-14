@@ -13,9 +13,9 @@ import {
 import Link from "next/link"
 
 export function NavSecondary({
-                                 items,
-                                 ...props
-                             }: {
+    items,
+    ...props
+}: {
     items: {
         title: string
         url: string

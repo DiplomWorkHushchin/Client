@@ -34,9 +34,6 @@ const taskFormSchema = z.object({
     dueDate: z.date({
         required_error: "A due date is required.",
     }),
-    dueTime: z.string().regex(/^([01]?[0-9]|2[0-3]):[0-5][0-9]$/, {
-        message: "Please enter a valid time in 24-hour format (HH:MM).",
-    }),
 })
 
 type TaskFormValues = z.infer<typeof taskFormSchema>
@@ -48,7 +45,6 @@ const defaultValues: Partial<TaskFormValues> = {
     type: "lecture",
     points: 10,
     dueDate: new Date(new Date().setDate(new Date().getDate() + 7)),
-    dueTime: "23:59",
 }
 
 // Function to format file size
@@ -91,7 +87,6 @@ export default function CreateTaskPage({ params }: { params: Promise<{ courseCod
             description: data.description,
             type: data.type,
             dueDate: new Date(data.dueDate),
-            dueTime: data.dueTime,
             maxPoints: data.type === "task" ? data.points : undefined,
             materials: materials.map((material) => ({
                 name: material.name,
@@ -100,10 +95,6 @@ export default function CreateTaskPage({ params }: { params: Promise<{ courseCod
         }
         
         await createTaskAsync(unwrappedParams.courseCode, createTaskDto, router)
-
-        const dateTime = new Date(data.dueDate)
-        const [hours, minutes] = data.dueTime.split(":").map(Number)
-        dateTime.setHours(hours, minutes)
 
         setIsSubmitting(false)
     }
@@ -281,24 +272,6 @@ export default function CreateTaskPage({ params }: { params: Promise<{ courseCod
                                                     <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
                                                 </PopoverContent>
                                             </Popover>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-
-                                <FormField
-                                    control={form.control}
-                                    name="dueTime"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Due Time</FormLabel>
-                                            <FormControl>
-                                                <div className="flex items-center">
-                                                    <Clock className="mr-2 h-4 w-4 text-muted-foreground" />
-                                                    <Input type="time" {...field} />
-                                                </div>
-                                            </FormControl>
-                                            <FormDescription>Time in 24-hour format (HH:MM).</FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}

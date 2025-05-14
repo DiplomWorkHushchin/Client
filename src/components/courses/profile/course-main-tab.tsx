@@ -1,7 +1,7 @@
 "use client"
 
-import { useState } from "react"
-import { BellIcon, BookOpenIcon, CalendarIcon, ClockIcon, InfoIcon } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { BookOpenIcon, CalendarIcon, ClockIcon } from "lucide-react"
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
@@ -10,42 +10,66 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Progress } from "@/components/ui/progress"
 import { Separator } from "@/components/ui/separator"
 import { Course } from "@/types/courses/i-course"
+import { getTasksAsync } from "@/services/materials-service"
+import Task from "@/types/courses/i-task"
+import { format } from "date-fns"
+import Link from "next/link"
 
 interface CourseMainTabProps {
   course: Course
 }
 
 export function CourseMainTab({ course }: CourseMainTabProps) {
+  const [tasks, setTasks] = useState<Task[] | null>(null);
+  const hasFetched = useRef(false);
 
-  const upcomingDeadlines = [
-    {
-      id: "1",
-      title: "Assignment #3",
-      dueDate: "May 15, 2025",
-      type: "assignment",
-    },
-    {
-      id: "2",
-      title: "Quiz on Chapter 5",
-      dueDate: "May 18, 2025",
-      type: "quiz",
-    },
-    {
-      id: "3",
-      title: "Group Project Milestone",
-      dueDate: "May 22, 2025",
-      type: "project",
-    },
-  ]
+  useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
 
-  // Calculate module progress
-  const modules = [
-    { id: "1", title: "Introduction to the Course", progress: 100 },
-    { id: "2", title: "Fundamental Concepts", progress: 75 },
-    { id: "3", title: "Advanced Topics", progress: 30 },
-    { id: "4", title: "Practical Applications", progress: 0 },
-    { id: "5", title: "Final Project", progress: 0 },
-  ]
+    const fetchCourses = async () => {
+      const taskData = await getTasksAsync(course.code);
+      if (taskData) setTasks(taskData);
+      console.log(taskData);
+    };
+
+    fetchCourses();
+
+  }, [])
+
+  const getStartAndEndOfWeek = (date: Date) => {
+    const start = new Date(date);
+    const end = new Date(date);
+
+    start.setDate(date.getDate() - date.getDay());
+    start.setHours(0, 0, 0, 0);
+
+    end.setDate(date.getDate() + (6 - date.getDay()));
+    end.setHours(23, 59, 59, 999);
+
+    return { start, end };
+  };
+
+  const { start, end } = getStartAndEndOfWeek(new Date());
+
+  const upcomingTasks = tasks
+    ?.filter((task) => {
+      const taskDate = new Date(task.dueDate);
+      return taskDate >= start && taskDate <= end;
+    })
+    .sort((a, b) => new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime())
+    .slice(0, 5) || [];
+
+  const getTaskIcon = (type: Task["materialType"]) => {
+    switch (type) {
+      case 0:
+        return <BookOpenIcon className="h-4 w-4 text-green-500" />
+      case 1:
+        return <BookOpenIcon className="h-4 w-4 text-blue-500" />
+      default:
+        return <BookOpenIcon className="h-4 w-4" />
+    }
+  }
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -108,28 +132,27 @@ export function CourseMainTab({ course }: CourseMainTabProps) {
           <CalendarIcon className="h-5 w-5 text-muted-foreground" />
         </CardHeader>
         <CardContent className="space-y-4">
-          {upcomingDeadlines.map((deadline) => (
-            <div key={deadline.id} className="flex items-center justify-between rounded-lg border p-3">
-              <div className="flex items-center gap-3">
-                {deadline.type === "assignment" && <BookOpenIcon className="h-4 w-4 text-blue-500" />}
-                {deadline.type === "quiz" && <InfoIcon className="h-4 w-4 text-yellow-500" />}
-                {deadline.type === "project" && <BookOpenIcon className="h-4 w-4 text-green-500" />}
-                <div>
-                  <div className="font-medium">{deadline.title}</div>
-                  <div className="text-xs text-muted-foreground">Due: {deadline.dueDate}</div>
+          {upcomingTasks.length === 0 ? (
+            <p className="text-muted-foreground">No tasks due this week</p>
+          ) : (
+            upcomingTasks.map((task) => (
+              <div key={task.id} className="flex items-center justify-between rounded-lg border p-3">
+                <div className="flex items-center gap-3">
+                  {getTaskIcon(task.materialType)}
+                  <div>
+                    <div className="font-medium">{task.title}</div>
+                    <div className="text-xs text-muted-foreground">Due: {format(task.dueDate, "dd.MM.yyyy")}</div>
+                  </div>
                 </div>
+                <Link href={`/courses/${course.code}/tasks/${task.id}`}>
+                  <Button variant="outline" size="sm" className="h-7 text-xs">
+                    View
+                  </Button>
+                </Link>
               </div>
-              <Button variant="outline" size="sm" className="h-7 text-xs">
-                View
-              </Button>
-            </div>
-          ))}
+            ))
+          )}
         </CardContent>
-        <CardFooter>
-          <Button variant="outline" size="sm" className="w-full">
-            View All Deadlines
-          </Button>
-        </CardFooter>
       </Card>
     </div>
   )

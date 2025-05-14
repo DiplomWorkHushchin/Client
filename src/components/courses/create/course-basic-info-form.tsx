@@ -89,7 +89,7 @@ export function CourseBasicInfoForm({ form, selectedFile, previewUrl, setSelecte
                 render={({ field }) => (
                   <FormItem className="flex-1 flex flex-col h-fit">
                     <FormLabel>Category</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value ?? "Computer Science"} >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select a category" />
@@ -119,7 +119,7 @@ export function CourseBasicInfoForm({ form, selectedFile, previewUrl, setSelecte
                 render={({ field }) => (
                   <FormItem className="flex-1 flex flex-col">
                     <FormLabel>Status</FormLabel>
-                    <Select onValueChange={field.onChange} value={field.value} defaultValue={field.value}>
+                    <Select onValueChange={field.onChange} value={field.value ?? "upcoming"} >
                       <FormControl>
                         <SelectTrigger>
                           <SelectValue placeholder="Select status" />
@@ -145,7 +145,14 @@ export function CourseBasicInfoForm({ form, selectedFile, previewUrl, setSelecte
                 <FormItem>
                   <FormLabel>Credits</FormLabel>
                   <FormControl>
-                    <Input type="number" min={1} step={0.5} {...field} onChange={(e) => field.onChange(Number(e.target.value))} />
+                    <Input
+                      type="number"
+                      min={1}
+                      step={0.5}
+                      {...field}
+                      value={field.value ? Number(field.value) : ""}
+                      onChange={(e) => field.onChange(Number(e.target.value))}
+                    />
                   </FormControl>
                   <FormDescription>Number of credits for this course</FormDescription>
                   <FormMessage />
@@ -230,20 +237,20 @@ export function CourseBasicInfoForm({ form, selectedFile, previewUrl, setSelecte
                 <FormLabel>Course Cover Image</FormLabel>
                 <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
-                      {previewUrl ?
-                        <img
-                          src={previewUrl}
-                          alt="banner-img"
-                          className="rounded-md w-full h-full object-cover cursor-pointer"
-                        />
-                        :
-                        <div
-                          className="bg-secondary rounded-md w-full max-w-2xl aspect-video flex justify-center items-center cursor-pointer"
-                          onClick={() => setIsDialogOpen(!isDialogOpen)}
-                        >
-                          <Image className="h-12 w-12" />
-                        </div>
-                      }
+                    {previewUrl ? (
+                      <img
+                        src={previewUrl}
+                        alt="banner-img"
+                        className="rounded-md w-full h-full object-cover cursor-pointer"
+                      />
+                    ) : (
+                      <div
+                        className="bg-secondary rounded-md w-full max-w-2xl aspect-video flex justify-center items-center cursor-pointer"
+                        onClick={() => setIsDialogOpen(!isDialogOpen)}
+                      >
+                        <Image className="h-12 w-12" />
+                      </div>
+                    )}
                   </DialogTrigger>
                   <DialogContent className="аspect-[16/9]">
                     <DialogHeader>
@@ -269,7 +276,6 @@ export function CourseBasicInfoForm({ form, selectedFile, previewUrl, setSelecte
               </FormItem>
             )}
           />
-
         </div>
       </CardContent>
     </Card>

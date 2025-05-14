@@ -27,7 +27,7 @@ export const courseFormSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters"),
   description: z.string().min(10, "Description must be at least 10 characters"),
   category: z.string().min(1, "Category is required"),
-  credits: z.number().min(0.1, "Credits must be at least 1"),
+  credits: z.number().min(0.5, "Credits must be at least 1"),
   status: z.enum(["in-progress", "upcoming", "completed"]),
   startDate: z.string().min(1, "Start date is required"),
   endDate: z.string().min(1, "End date is required"),

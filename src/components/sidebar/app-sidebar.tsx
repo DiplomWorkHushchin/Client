@@ -3,15 +3,12 @@
 import * as React from "react"
 import {
     BarChartIcon, BookOpenCheck,
-    ClipboardListIcon,
-    DatabaseIcon,
-    FileIcon,
     LayoutDashboardIcon,
     MessageCircle,
     SettingsIcon,
+    Users,
 } from "lucide-react"
 
-import { NavDocuments } from "@/components/sidebar/nav-documents"
 import { NavMain } from "@/components/sidebar/nav-main"
 import { NavSecondary } from "@/components/sidebar/nav-secondary"
 import { NavUser } from "@/components/sidebar/nav-user"
@@ -48,29 +45,17 @@ const data = {
             url: "/chats",
             icon: MessageCircle,
         },
+        {
+            title: "Users",
+            url: "/users",
+            icon: Users
+        }
     ],
     navSecondary: [
         {
             title: "Settings",
             url: "/settings",
             icon: SettingsIcon,
-        },
-    ],
-    documents: [
-        {
-            name: "Data Library",
-            url: "#",
-            icon: DatabaseIcon,
-        },
-        {
-            name: "Reports",
-            url: "#",
-            icon: ClipboardListIcon,
-        },
-        {
-            name: "Word Assistant",
-            url: "#",
-            icon: FileIcon,
         },
     ],
 }
@@ -135,7 +120,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
             <SidebarContent>
                 <NavMain items={data.navMain} />
-                <NavDocuments items={data.documents} />
                 <NavSecondary items={data.navSecondary} className="mt-auto" />
             </SidebarContent>
             <SidebarFooter>
